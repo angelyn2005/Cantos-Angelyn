@@ -27,6 +27,84 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
       transform: scale(1.05);
     }
 
+    /* Top actions container: search left, buttons right */
+    .top-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Search form styling */
+    .search-form {
+      flex-grow: 1;
+      max-width: 320px;
+    }
+    .search-input {
+      padding: 0.5rem 1rem;
+      border: 1px solid #22c55e; /* green-500 */
+      border-right: none;
+      border-radius: 0.5rem 0 0 0.5rem;
+      outline: none;
+      width: 100%;
+      background-color: #d1fae5; /* green-100 */
+      transition: box-shadow 0.3s ease;
+    }
+    .search-input:focus {
+      box-shadow: 0 0 8px #34d399;
+      border-color: #34d399;
+    }
+    .search-button {
+      background: linear-gradient(to right, #047857, #22c55e); /* green gradient */
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0 0.5rem 0.5rem 0;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .search-button:hover {
+      background: linear-gradient(to right, #065f46, #16a34a);
+      box-shadow: 0 0 12px #34d399, 0 0 24px #065f46;
+      transform: scale(1.05);
+    }
+
+    /* Buttons container */
+    .buttons-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: nowrap;
+    }
+
+    /* Add New and Logout buttons */
+    .btn-hover {
+      font-weight: bold;
+      padding: 0.5rem 1.25rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn-add, .btn-logout {
+      background: linear-gradient(to right, #047857, #22c55e); /* green gradient */
+      color: white;
+    }
+    .btn-add:hover, .btn-logout:hover {
+      background: linear-gradient(to right, #065f46, #16a34a);
+      box-shadow: 0 0 12px #34d399, 0 0 24px #065f46;
+      transform: scale(1.05);
+    }
+
     /* Pagination container */
     .pagination {
       display: flex !important;
@@ -50,7 +128,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
       user-select: none;
     }
     .pagination a {
-      background: #16a34a; /* green-600, lighter than logout */
+      background: #16a34a; /* green-600 */
       color: #f0fdf4;
       border: 1px solid #22c55e; /* green-500 border */
     }
@@ -59,7 +137,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
       color: #064e3b;
     }
     .pagination .current {
-      background: #15803d; /* green-700 but lighter than logout */
+      background: #15803d; /* green-700 */
       color: #f0fdf4;
       border: 1px solid #166534; /* green-800 border */
       cursor: default;
@@ -129,14 +207,33 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
   <div class="max-w-6xl mx-auto mt-10 px-4">
     <div class="bg-green-50 shadow-xl rounded-xl p-6 border-4 border-green-500">
 
-      <!-- Top Actions: Add New + Logout -->
+      <!-- Top Actions: Search left, Add New + Logout right -->
       <div class="top-actions">
-        <a href="<?=site_url('users/create')?>" class="btn-hover btn-add">
-          <i class="fa-solid fa-user-plus"></i> Add New
-        </a>
-        <a href="<?=site_url('auth/logout')?>" class="btn-logout">
-          <i class="fa-solid fa-right-from-bracket"></i> Logout
-        </a>
+        <!-- Search Bar -->
+        <form method="get" action="<?=site_url('/users')?>" class="search-form" role="search" aria-label="Search students">
+          <div class="flex">
+            <input 
+              type="text" 
+              name="q" 
+              value="<?=html_escape($_GET['q'] ?? '')?>" 
+              placeholder="Search student..." 
+              class="search-input" 
+              aria-label="Search student" />
+            <button type="submit" class="search-button" aria-label="Submit search">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </form>
+
+        <!-- Buttons group -->
+        <div class="buttons-group">
+          <a href="<?=site_url('users/create')?>" class="btn-hover btn-add" aria-label="Add new student">
+            <i class="fa-solid fa-user-plus"></i> Add New
+          </a>
+          <a href="<?=site_url('auth/logout')?>" class="btn-hover btn-logout" aria-label="Logout">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </a>
+        </div>
       </div>
 
       <!-- Table -->
@@ -169,7 +266,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
       <!-- Pagination centered horizontally -->
       <div>
-        <div class="pagination">
+        <div class="pagination" role="navigation" aria-label="Pagination Navigation">
           <?php
             if (!empty($page)) {
               // Clean whitespace to avoid vertical stacking
