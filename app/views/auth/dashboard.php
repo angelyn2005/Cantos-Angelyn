@@ -57,80 +57,73 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
     <div class="bg-green-50 shadow-xl rounded-xl p-6 border-4 border-green-500">
 
       <!-- Top Actions -->
-      <div class="flex justify-between items-center mb-6">
-        
-        <!-- Search Bar -->
-        <form method="get" action="<?=site_url('/auth/dashboard')?>" class="mb-4 flex justify-end">
-          <input 
-            type="text" 
-            name="q" 
-            value="<?=html_escape($_GET['q'] ?? '')?>" 
-            placeholder="Search student..." 
-            class="px-4 py-2 border border-green-400 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-600 w-64 bg-green-100">
-          <button type="submit" class="bg-green-700 hover:bg-green-800 text-white font-semibold px-4 py-2 rounded-r-lg shadow transition-all duration-300">
-            <i class="fa fa-search"></i>
-          </button>
-        </form>
-
-      </div>
-
-      <!-- Table -->
-      <div class="overflow-x-auto rounded-xl border-4 border-green-500">
-        <table class="w-full text-center border-collapse">
-          <thead>
-            <tr class="bg-gradient-to-r from-green-800 to-green-600 text-green-100 uppercase tracking-wider hp-title text-lg">
-              <th class="py-3 px-4">ID</th>
-              <th class="py-3 px-4">Lastname</th>
-              <th class="py-3 px-4">Firstname</th>
-              <th class="py-3 px-4">Email</th>
-            </tr>
-          </thead>
-          <tbody class="text-gray-900 text-sm" style="font-family:'IM Fell English', serif;">
-            <?php if(!empty($users)): ?>
-              <?php foreach(html_escape($users) as $user): ?>
-                <tr class="hover:bg-green-100 transition duration-200">
-                  <td class="py-3 px-4 font-medium"><?=($user['id']);?></td>
-                  <td class="py-3 px-4"><?=($user['last_name']);?></td>
-                  <td class="py-3 px-4"><?=($user['first_name']);?></td>
-                  <td class="py-3 px-4"><?=($user['email']);?></td>
-                </tr>
-              <?php endforeach; ?>
-            <?php else: ?>
-              <tr><td colspan="4" class="py-4 text-gray-600">No students found.</td></tr>
-            <?php endif; ?>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Pagination + Logout -->
-      <div class="mt-4 flex justify-between items-center">
-        
-        <!-- Pagination -->
-        <div class="pagination flex justify-center items-center">
-          <?php
-            if (!empty($page)) {
-              echo str_replace(
-                ['<a ', '<strong>', '</strong>'],
-                [
-                  '<a ',
-                  '<span class="current">',
-                  '</span>'
-                ],
-                $page
-              );
-            }
-          ?>
-        </div>
-
-        <!-- Logout Button -->
-        <a href="<?=site_url('auth/logout');?>"
-           class="btn-hover bg-green-700 hover:bg-green-800 text-white font-semibold px-4 py-2 rounded-lg shadow flex items-center gap-2">
-           <i class="fa-solid fa-right-from-bracket"></i> Logout
-        </a>
-      </div>
-
+<div class="flex justify-between items-center mb-6">
+  
+  <!-- Search Bar -->
+  <form method="get" action="<?=site_url('/auth/dashboard')?>" class="flex-grow max-w-xs">
+    <div class="flex">
+      <input 
+        type="text" 
+        name="q" 
+        value="<?=html_escape($_GET['q'] ?? '')?>" 
+        placeholder="Search student..." 
+        class="px-4 py-2 border border-green-400 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-600 w-full bg-green-100">
+      <button type="submit" class="bg-green-700 hover:bg-green-800 text-white font-semibold px-4 py-2 rounded-r-lg shadow transition-all duration-300">
+        <i class="fa fa-search"></i>
+      </button>
     </div>
-  </div>
+  </form>
 
-</body>
-</html>
+  <!-- Logout Button aligned right -->
+  <a href="<?=site_url('auth/logout');?>"
+     class="btn-hover bg-green-700 hover:bg-green-800 text-white font-semibold px-4 py-2 rounded-lg shadow flex items-center gap-2 ml-4 whitespace-nowrap">
+     <i class="fa-solid fa-right-from-bracket"></i> Logout
+  </a>
+</div>
+
+<!-- Table -->
+<div class="overflow-x-auto rounded-xl border-4 border-green-500">
+  <table class="w-full text-center border-collapse">
+    <thead>
+      <tr class="bg-gradient-to-r from-green-800 to-green-600 text-green-100 uppercase tracking-wider hp-title text-lg">
+        <th class="py-3 px-4">ID</th>
+        <th class="py-3 px-4">Lastname</th>
+        <th class="py-3 px-4">Firstname</th>
+        <th class="py-3 px-4">Email</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-900 text-sm" style="font-family:'IM Fell English', serif;">
+      <?php if(!empty($users)): ?>
+        <?php foreach(html_escape($users) as $user): ?>
+          <tr class="hover:bg-green-100 transition duration-200">
+            <td class="py-3 px-4 font-medium"><?=($user['id']);?></td>
+            <td class="py-3 px-4"><?=($user['last_name']);?></td>
+            <td class="py-3 px-4"><?=($user['first_name']);?></td>
+            <td class="py-3 px-4"><?=($user['email']);?></td>
+          </tr>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <tr><td colspan="4" class="py-4 text-gray-600">No students found.</td></tr>
+      <?php endif; ?>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination centered horizontally -->
+<div class="mt-6 flex justify-center">
+  <div class="pagination flex space-x-2">
+    <?php
+      if (!empty($page)) {
+        echo str_replace(
+          ['<a ', '<strong>', '</strong>'],
+          [
+            '<a ',
+            '<span class="current">',
+            '</span>'
+          ],
+          $page
+        );
+      }
+    ?>
+  </div>
+</div>
