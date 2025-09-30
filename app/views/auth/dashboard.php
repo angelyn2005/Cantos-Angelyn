@@ -17,6 +17,28 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
     body { font-family: 'IM Fell English', serif; background-color: #ecfdf5; } /* light mint background */
     .font-title { font-family: 'Cinzel Decorative', cursive; letter-spacing: 2px; }
     .btn-hover:hover { box-shadow: 0 0 12px #34d399, 0 0 24px #065f46; transform: scale(1.05); }
+    .pagination a, .pagination span {
+      display: inline-block;
+      margin: 0 4px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+    .pagination a {
+      background: #064e3b; /* dark green */
+      color: #f0fdf4;
+      border: 1px solid #065f46;
+    }
+    .pagination a:hover {
+      background: #10b981; /* lighter green on hover */
+      color: #064e3b;
+    }
+    .pagination .current {
+      background: #065f46; /* darker highlight for current page */
+      color: #f0fdf4;
+      border: 1px solid #064e3b;
+    }
   </style>
 </head>
 <body class="min-h-screen">
@@ -80,17 +102,18 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         </table>
       </div>
 
-      <!-- Pagination -->
+      <!-- Pagination + Logout -->
       <div class="mt-4 flex justify-between items-center">
-        <!-- Pagination left -->
-        <div class="pagination flex space-x-2">
+        
+        <!-- Pagination -->
+        <div class="pagination flex justify-center items-center">
           <?php
             if (!empty($page)) {
               echo str_replace(
                 ['<a ', '<strong>', '</strong>'],
                 [
-                  '<a class="hp-page text-green-800"',
-                  '<span class="hp-current bg-green-200 px-2 py-1 rounded font-bold text-green-900">',
+                  '<a ',
+                  '<span class="current">',
                   '</span>'
                 ],
                 $page
