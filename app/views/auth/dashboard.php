@@ -17,6 +17,28 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
     body { font-family: 'IM Fell English', serif; background-color: #ecfdf5; } /* light mint background */
     .font-title { font-family: 'Cinzel Decorative', cursive; letter-spacing: 2px; }
     .btn-hover:hover { box-shadow: 0 0 12px #34d399, 0 0 24px #065f46; transform: scale(1.05); }
+    .pagination a, .pagination span {
+      display: inline-block;
+      margin: 0 4px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+    .pagination a {
+      background: #064e3b; /* dark green */
+      color: #f0fdf4;
+      border: 1px solid #065f46;
+    }
+    .pagination a:hover {
+      background: #10b981; /* lighter green on hover */
+      color: #064e3b;
+    }
+    .pagination .current {
+      background: #065f46; /* darker highlight for current page */
+      color: #f0fdf4;
+      border: 1px solid #064e3b;
+    }
   </style>
 </head>
 <body class="min-h-screen">
@@ -27,12 +49,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
       <h1 class="text-green-100 font-title text-2xl flex items-center gap-2">
         <i class="fa-solid fa-hat-wizard"></i> Student Directory
       </h1>
-
-      <!-- Logout Button -->
-      <a href="<?=site_url('auth/logout');?>"
-        class="btn-hover bg-green-700 hover:bg-green-800 text-white font-semibold px-4 py-2 rounded-lg shadow flex items-center gap-2">
-        <i class="fa-solid fa-right-from-bracket"></i> Logout
-      </a>
     </div>
   </nav>
 
@@ -41,9 +57,10 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
     <div class="bg-green-50 shadow-xl rounded-xl p-6 border-4 border-green-500">
 
       <!-- Top Actions -->
-      <div class="flex justify-end items-center mb-6">
+      <div class="flex justify-between items-center mb-6">
+        
         <!-- Search Bar -->
-        <form method="get" action="<?=site_url('/auth/dashboard')?>" class="flex">
+        <form method="get" action="<?=site_url('/auth/dashboard')?>" class="mb-4 flex justify-end">
           <input 
             type="text" 
             name="q" 
@@ -54,6 +71,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             <i class="fa fa-search"></i>
           </button>
         </form>
+
       </div>
 
       <!-- Table -->
@@ -84,9 +102,31 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         </table>
       </div>
 
-      <!-- Pagination -->
-      <div class="mt-6 flex justify-center">
-        <?php include APP_DIR . 'views/partials/pagination.php'; ?>
+      <!-- Pagination + Logout -->
+      <div class="mt-4 flex justify-between items-center">
+        
+        <!-- Pagination -->
+        <div class="pagination flex justify-center items-center">
+          <?php
+            if (!empty($page)) {
+              echo str_replace(
+                ['<a ', '<strong>', '</strong>'],
+                [
+                  '<a ',
+                  '<span class="current">',
+                  '</span>'
+                ],
+                $page
+              );
+            }
+          ?>
+        </div>
+
+        <!-- Logout Button -->
+        <a href="<?=site_url('auth/logout');?>"
+           class="btn-hover bg-green-700 hover:bg-green-800 text-white font-semibold px-4 py-2 rounded-lg shadow flex items-center gap-2">
+           <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
       </div>
 
     </div>
