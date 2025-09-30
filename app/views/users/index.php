@@ -39,8 +39,8 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
     /* Search form styling */
     .search-form {
-      flex-grow: 1;
       max-width: 320px;
+      flex-grow: 0;
     }
     .search-input {
       padding: 0.5rem 1rem;
@@ -142,54 +142,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
       border: 1px solid #166534; /* green-800 border */
       cursor: default;
     }
-
-    /* Top action container for Add New and Logout */
-    .top-actions {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-    .top-actions .btn-hover {
-      font-weight: bold;
-      padding: 0.5rem 1.25rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-decoration: none;
-    }
-    .top-actions .btn-add {
-      background: linear-gradient(to right, #047857, #22c55e); /* green gradient */
-      color: white;
-    }
-    .top-actions .btn-add:hover {
-      background: linear-gradient(to right, #065f46, #16a34a);
-      box-shadow: 0 0 12px #34d399, 0 0 24px #065f46;
-      transform: scale(1.05);
-    }
-    .top-actions .btn-logout {
-      background-color: #065f46; /* dark green */
-      color: #f0fdf4;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background-color 0.3s ease;
-    }
-    .top-actions .btn-logout:hover {
-      background-color: #10b981; /* lighter green */
-      color: #064e3b;
-      box-shadow: 0 0 12px #34d399, 0 0 24px #065f46;
-      transform: scale(1.05);
-    }
   </style>
 </head>
 <body class="min-h-screen">
@@ -209,7 +161,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
       <!-- Top Actions: Search left, Add New + Logout right -->
       <div class="top-actions">
-        <!-- Search Bar -->
+        <!-- Search Bar aligned left -->
         <form method="get" action="<?=site_url('/users')?>" class="search-form" role="search" aria-label="Search students">
           <div class="flex">
             <input 
@@ -225,7 +177,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
           </div>
         </form>
 
-        <!-- Buttons group -->
+        <!-- Buttons group aligned right -->
         <div class="buttons-group">
           <a href="<?=site_url('users/create')?>" class="btn-hover btn-add" aria-label="Add new student">
             <i class="fa-solid fa-user-plus"></i> Add New
