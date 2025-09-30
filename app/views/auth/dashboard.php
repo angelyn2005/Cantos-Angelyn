@@ -26,16 +26,26 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
       box-shadow: 0 0 12px #34d399, 0 0 24px #065f46;
       transform: scale(1.05);
     }
+    /* Pagination container */
+    .pagination {
+      display: flex !important; /* force flex */
+      justify-content: center;
+      gap: 8px; /* space between buttons */
+      flex-wrap: nowrap; /* prevent wrapping to next line */
+      font-family: 'IM Fell English', serif;
+    }
+    /* Pagination links and current page */
     .pagination a,
     .pagination span {
       display: inline-block;
-      margin: 0 4px;
       padding: 6px 12px;
       border-radius: 6px;
       font-weight: bold;
       transition: all 0.2s ease;
-      font-family: 'IM Fell English', serif;
       text-decoration: none;
+      white-space: nowrap; /* prevent text wrap */
+      line-height: 1;
+      user-select: none;
     }
     .pagination a {
       background: #16a34a; /* green-600, lighter than logout */
@@ -123,10 +133,12 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
       </div>
 
       <!-- Pagination centered horizontally -->
-      <div class="mt-6 flex justify-center">
-        <div class="pagination flex space-x-2">
+      <div class="mt-6">
+        <div class="pagination">
           <?php
             if (!empty($page)) {
+              // Remove any line breaks or extra whitespace to prevent vertical stacking
+              $clean_page = preg_replace('/\s+/', ' ', $page);
               echo str_replace(
                 ['<a ', '<strong>', '</strong>'],
                 [
@@ -134,7 +146,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
                   '<span class="current">',
                   '</span>'
                 ],
-                $page
+                $clean_page
               );
             }
           ?>
