@@ -14,11 +14,14 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm">
     <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Create Account</h1>
-    <form method="post" class="space-y-4">
+    <form method="post" class="space-y-4" onsubmit="return validatePassword()">
         <input type="text" name="username" placeholder="Username" required
                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         
-        <input type="password" name="password" placeholder="Password" required
+        <input type="password" id="password" name="password" placeholder="Password" required minlength="8"
+               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="Re-enter Password" required minlength="8"
                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         
         <select name="role" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -35,6 +38,24 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         <a href="<?= site_url('auth/login') ?>" class="text-blue-500 font-semibold hover:underline">Login</a>
     </p>
 </div>
+
+<script>
+function validatePassword() {
+    const pass = document.getElementById("password").value;
+    const confirmPass = document.getElementById("confirm_password").value;
+
+    if (pass.length < 8) {
+        alert("⚠️ Password must be at least 8 characters long");
+        return false;
+    }
+
+    if (pass !== confirmPass) {
+        alert("⚠️ Passwords do not match");
+        return false;
+    }
+    return true;
+}
+</script>
 
 </body>
 </html>
