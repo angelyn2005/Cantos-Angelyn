@@ -44,12 +44,12 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
     }
     .search-input {
       padding: 0.5rem 1rem;
-      border: 1px solid #22c55e; /* green-500 */
+      border: 1px solid #22c55e;
       border-right: none;
       border-radius: 0.5rem 0 0 0.5rem;
       outline: none;
       width: 100%;
-      background-color: #d1fae5; /* green-100 */
+      background-color: #d1fae5;
       transition: box-shadow 0.3s ease;
     }
     .search-input:focus {
@@ -57,7 +57,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
       border-color: #34d399;
     }
     .search-button {
-      background: linear-gradient(to right, #047857, #22c55e); /* green gradient */
+      background: linear-gradient(to right, #047857, #22c55e);
       color: white;
       padding: 0.5rem 1rem;
       border-radius: 0 0.5rem 0.5rem 0;
@@ -82,7 +82,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
       flex-wrap: nowrap;
     }
 
-    /* Add New and Logout buttons */
     .btn-hover {
       font-weight: bold;
       padding: 0.5rem 1.25rem;
@@ -96,13 +95,35 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
       cursor: pointer;
     }
     .btn-add, .btn-logout {
-      background: linear-gradient(to right, #047857, #22c55e); /* green gradient */
+      background: linear-gradient(to right, #047857, #22c55e);
       color: white;
     }
     .btn-add:hover, .btn-logout:hover {
       background: linear-gradient(to right, #065f46, #16a34a);
       box-shadow: 0 0 12px #34d399, 0 0 24px #065f46;
       transform: scale(1.05);
+    }
+
+    /* Action buttons (Edit/Delete) */
+    .btn-edit {
+      background: #3b82f6; /* blue */
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+    }
+    .btn-edit:hover {
+      background: #2563eb;
+    }
+    .btn-delete {
+      background: #ef4444; /* red */
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+    }
+    .btn-delete:hover {
+      background: #dc2626;
     }
 
     /* Pagination container */
@@ -114,7 +135,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
       font-family: 'IM Fell English', serif;
       margin-top: 1rem;
     }
-    /* Pagination links and current page */
     .pagination a,
     .pagination span {
       display: inline-block;
@@ -128,18 +148,18 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
       user-select: none;
     }
     .pagination a {
-      background: #16a34a; /* green-600 */
+      background: #16a34a;
       color: #f0fdf4;
-      border: 1px solid #22c55e; /* green-500 border */
+      border: 1px solid #22c55e;
     }
     .pagination a:hover {
-      background: #22c55e; /* green-500 lighter on hover */
+      background: #22c55e;
       color: #064e3b;
     }
     .pagination .current {
-      background: #15803d; /* green-700 */
+      background: #15803d;
       color: #f0fdf4;
-      border: 1px solid #166534; /* green-800 border */
+      border: 1px solid #166534;
       cursor: default;
     }
   </style>
@@ -159,9 +179,8 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
   <div class="max-w-6xl mx-auto mt-10 px-4">
     <div class="bg-green-50 shadow-xl rounded-xl p-6 border-4 border-green-500">
 
-      <!-- Top Actions: Search left, Add New + Logout right -->
+      <!-- Top Actions -->
       <div class="top-actions">
-        <!-- Search Bar aligned left -->
         <form method="get" action="<?=site_url('/users')?>" class="search-form" role="search" aria-label="Search students">
           <div class="flex">
             <input 
@@ -177,7 +196,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
           </div>
         </form>
 
-        <!-- Buttons group aligned right -->
         <div class="buttons-group">
           <a href="<?=site_url('users/create')?>" class="btn-hover btn-add" aria-label="Add new student">
             <i class="fa-solid fa-user-plus"></i> Add New
@@ -197,31 +215,45 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
               <th class="py-3 px-4">Lastname</th>
               <th class="py-3 px-4">Firstname</th>
               <th class="py-3 px-4">Email</th>
+              <?php if($_SESSION['role'] === 'admin'): ?>
+                <th class="py-3 px-4">Actions</th>
+              <?php endif; ?>
             </tr>
           </thead>
           <tbody class="text-gray-900 text-sm" style="font-family:'IM Fell English', serif;">
             <?php if(!empty($users)): ?>
-              <?php foreach(html_escape($users) as $user): ?>
+              <?php foreach($users as $user): ?>
                 <tr class="hover:bg-green-100 transition duration-200">
                   <td class="py-3 px-4 font-medium"><?=($user['id']);?></td>
                   <td class="py-3 px-4"><?=($user['last_name']);?></td>
                   <td class="py-3 px-4"><?=($user['first_name']);?></td>
                   <td class="py-3 px-4"><?=($user['email']);?></td>
+                  <?php if($_SESSION['role'] === 'admin'): ?>
+                    <td class="py-3 px-4 flex justify-center gap-2">
+                      <a href="<?=site_url('users/update/'.$user['id'])?>" class="btn-edit">
+                        <i class="fa fa-edit"></i> Edit
+                      </a>
+                      <a href="<?=site_url('users/delete/'.$user['id'])?>" 
+                         onclick="return confirm('Are you sure you want to delete this user?')" 
+                         class="btn-delete">
+                        <i class="fa fa-trash"></i> Delete
+                      </a>
+                    </td>
+                  <?php endif; ?>
                 </tr>
               <?php endforeach; ?>
             <?php else: ?>
-              <tr><td colspan="4" class="py-4 text-gray-600">No students found.</td></tr>
+              <tr><td colspan="5" class="py-4 text-gray-600">No students found.</td></tr>
             <?php endif; ?>
           </tbody>
         </table>
       </div>
 
-      <!-- Pagination centered horizontally -->
+      <!-- Pagination -->
       <div>
         <div class="pagination" role="navigation" aria-label="Pagination Navigation">
           <?php
             if (!empty($page)) {
-              // Clean whitespace to avoid vertical stacking
               $clean_page = preg_replace('/\s+/', ' ', $page);
               echo str_replace(
                 ['<a ', '<strong>', '</strong>'],
